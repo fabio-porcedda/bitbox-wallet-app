@@ -47,6 +47,9 @@ win32 {
     QMAKE_CXXFLAGS += $$CFORTIFY
     QMAKE_CXXFLAGS += $$CSTACK
     QMAKE_CXXFLAGS += $$CMISC
+    # On Debian/Ubuntu (docker) GCC adds -fPIE by default, but other
+    # toolchains (e.g. Fedora/GCC) do not.
+    QMAKE_CXXFLAGS += $$CASLR
 }
 
 # https://stackoverflow.com/questions/18462420/how-to-specify-mac-platform-in-qmake-qtcreator
