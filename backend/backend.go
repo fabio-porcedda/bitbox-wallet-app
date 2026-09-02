@@ -1188,6 +1188,7 @@ func (backend *Backend) ClearCache() error {
 	}
 
 	backend.ratesUpdater = backend.newRatesUpdater()
+	backend.log.Debug("Cache deletion confirmed; starting synchronization")
 	backend.initAccounts(true)
 	if backend.started {
 		backend.ratesUpdater.StartCurrentRates()

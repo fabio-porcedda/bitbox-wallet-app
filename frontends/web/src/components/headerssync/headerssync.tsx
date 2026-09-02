@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMountedRef } from '@/hooks/mount';
 import { CoinCode } from '@/api/account';
@@ -18,9 +18,14 @@ export const HeadersSync = ({ coinCode }: TProps) => {
   const status = useSubscribe(subscribeCoinHeaders(coinCode));
   const [hidden, setHidden] = useState<boolean>(false);
   const mounted = useMountedRef();
+  const syncFinishedLogged = useRef(false);
 
   useEffect(() => {
     if (mounted.current && status?.success && (status.status.tip === status.status.targetHeight)) {
+      if (!syncFinishedLogged.current) {
+        console.debug('Blocks synced displayed without percentage; synchronization finished');
+        syncFinishedLogged.current = true;
+      }
       setTimeout(() => setHidden(true), 4000);
     }
   }, [mounted, status]);
